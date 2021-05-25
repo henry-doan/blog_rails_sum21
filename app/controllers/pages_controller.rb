@@ -15,4 +15,18 @@ class PagesController < ApplicationController
     @page = Page.new 
     render component: 'PageNew', props: { page: @page }
   end
+
+  def create
+    @page = Page.new(page_params)
+    if @page.save 
+      redirect_to pages_path
+    else
+      render component: 'PageNew', props: { page: @page }
+    end
+  end
+
+  private 
+    def page_params
+      params.require(:page).permit(:title, :author, :body)
+    end
 end
